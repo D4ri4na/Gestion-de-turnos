@@ -20,3 +20,17 @@ class Queue:
         temp = self.head
         self.head = self.head.next
         return temp
+            
+    def remove_ticket(self, ticket_to_remove):
+        current = self.head
+        previous = None
+        while current is not None:
+            if current.value == ticket_to_remove:
+                if previous is None:
+                    self.head = current.next
+                else:
+                    previous.next = current.next
+                return True
+            previous = current
+            current = current.next
+        return False
