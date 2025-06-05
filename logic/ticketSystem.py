@@ -1,3 +1,4 @@
+
 from queue import Queue
 
 class TicketSystem:
@@ -14,16 +15,19 @@ class TicketSystem:
         self.general_ticket_counter += 1
         ticket_id = f"G-{self.general_ticket_counter}"
         self.general_queue.enqueue("General", ticket_id)
+        return ticket_id
 
     def insertar_preferencial(self):
         self.priority_counter += 1
         ticket_id = f"P-{self.priority_counter}"
-        self.priority_queue.enqueue("Priority", ticket_id)
+        self.priority_queue.enqueue("Preferencial", ticket_id)
+        return ticket_id
 
     def insertar_cambio_de_moneda(self):
         self.currency_counter += 1
         ticket_id = f"C-{self.currency_counter}"
-        self.currency_exchange_queue.enqueue("Currency Exchange", ticket_id)
+        self.currency_exchange_queue.enqueue("Cambio de Moneda", ticket_id)
+        return ticket_id
 
     def next_ticket(self):
         if self.priority_queue.head is not None:
@@ -47,45 +51,28 @@ class TicketSystem:
         if self.currency_exchange_queue.remove_ticket(ticket_to_cancel):
             return True
         return False
-    
+
     def show_status(self):
-        print("--- Tickets por atender ---")
-        order_number = 1
+        status = []
         general_counter = 0
-        priority_current = self.priority_queue.head
-        general_current = self.general_queue.head
-        currency_current = self.currency_exchange_queue.head
-        
-        while (priority_current is not None or general_current is not None or currency_current is not None):
-            if priority_current is not None:
-                print(f"{order_number}. Ticket {priority_current.value} ({priority_current.priority})")
-                priority_current = priority_current.next
-                order_number += 1
-            elif general_counter >= 2 and currency_current is not None:
-                print(f"{order_number}. Ticket {currency_current.value} ({currency_current.priority})")
-                currency_current = currency_current.next
+        priority_list = self.priority_queue.list_all()
+        general_list = self.general_queue.list_all()
+        currency_list = self.currency_exchange_queue.list_all()
+        i, j, k = 0, 0, 0
+
+        while i < len(priority_list) or j < len(general_list) or k < len(currency_list):
+            if i < len(priority_list):
+                status.append(priority_list[i])
+                i += 1
+            elif general_counter >= 2 and k < len(currency_list):
+                status.append(currency_list[k])
+                k += 1
                 general_counter = 0
-                order_number += 1
-            elif general_current is not None:
-                print(f"{order_number}. Ticket {general_current.value} ({general_current.priority})")
-                general_current = general_current.next
+            elif j < len(general_list):
+                status.append(general_list[j])
+                j += 1
                 general_counter += 1
-                order_number += 1
-            elif currency_current is not None:
-                print(f"{order_number}. Ticket {currency_current.value} ({currency_current.priority})")
-                currency_current = currency_current.next
-                order_number += 1
-
-ticket_system = TicketSystem()
-
-ticket_system.insertar_general()
-ticket_system.insertar_preferencial()
-ticket_system.insertar_cambio_de_moneda()
-ticket_system.insertar_general()
-ticket_system.insertar_preferencial()
-ticket_system.insertar_general()
-ticket_system.insertar_general()
-ticket_system.insertar_cambio_de_moneda()
-ticket_system.show_status()
-ticket_system.cancel_ticket("G-2")
-ticket_system.show_status()
+            elif k < len(currency_list):
+                status.append(currency_list[k])
+                k += 1
+        return status
