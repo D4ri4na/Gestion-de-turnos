@@ -1,15 +1,13 @@
 from node import Node
 
-class Cola:
+class ListaEnlazada:
     def __init__(self):
         self.head = None
 
-    def is_empty(self):
-        return self.head is None
-
-    def encolar(self, data):
+    def agregar(self, data):
         new_node = Node(data)
-        if self.is_empty():
+
+        if self.head is None:
             self.head = new_node
         else:
             current = self.head
@@ -17,33 +15,30 @@ class Cola:
                 current = current.next
             current.next = new_node
 
-    def desencolar(self):
-        if self.is_empty():
-            return None
-        data = self.head.data
-        self.head = self.head.next
-        return data
-
-    def remove_ticket_id(self, ticket_id):
-        if self.is_empty():
+    def eliminar(self, ticket_id):
+        if self.head is None:
             return False
+        
         if self.head.data[0] == ticket_id:
             self.head = self.head.next
             return True
         
         current = self.head
-        while current.next:
+        while current.next is not None:
             if current.next.data[0] == ticket_id:
                 current.next = current.next.next
                 return True
             current = current.next
-        return False
 
+        return False
+    
     def mostrar(self):
-        items = []
+        tickets = []
         current = self.head
         while current:
-            items.append(current.data)
+            tickets.append(current.data)
             current = current.next
-        return items
+        return tickets
     
+    def is_empty(self):
+        return self.head is None
