@@ -1,7 +1,11 @@
 
 from node import Node
 
+<<<<<<< HEAD
 class ColaPrioridad:
+=======
+class Cola:
+>>>>>>> fb27c004903f71acb7664a2bdc4854144691428e
     def __init__(self):
         self.head = None
 
