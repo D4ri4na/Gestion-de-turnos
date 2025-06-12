@@ -119,6 +119,18 @@ with pantalla:
     html_cuadros += "</div>"
 
     st.markdown(html_cuadros, unsafe_allow_html=True)
+    # Muestra el ticket que se está atendiendo en un cuadrado grande debajo
+    if st.session_state.ticket_atendiendo and st.session_state.ticket_atendiendo != "":
+        html_atendiendo = (
+            "<div style='display: flex; justify-content: center; margin-top: 30px;'>"
+            f"<div style='width:120px;height:120px;display:flex;align-items:center;justify-content:center;"
+            "border:4px solid #d7263d;background:#fff;"
+            "font-size:2.5em;font-weight:bold;color:#d7263d;"
+            "text-decoration:underline;box-shadow:0 0 12px #d7263d;'>"
+            f"{st.session_state.ticket_atendiendo}</div>"
+            "</div>"
+        )
+        st.markdown(html_atendiendo, unsafe_allow_html=True)
 
 with st.container():
     st.markdown(
