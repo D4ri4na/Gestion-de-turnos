@@ -70,7 +70,7 @@ class TicketSystem:
         tickets = self.ordered_tickets.mostrar()
         result = []
         for ticket in tickets:
-            formatted_ticket = f"{ticket[0]} - {ticket[1]}"
+            formatted_ticket = f"{ticket[0]}"
             result.append(formatted_ticket)
         return result
 
